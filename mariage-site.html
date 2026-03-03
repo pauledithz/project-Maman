@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belle Fête — Location Mariage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose-pale: #fce8e8;
+      --rose-doux: #f4c0c0;
+      --rose-moyen: #e8919b;
+      --rose-fonce: #c4606a;
+      --creme: #fdf6f0;
+      --or: #c9a96e;
+      --blanc: #ffffff;
+      --texte: #4a3535;
+      --gris-doux: #9e8080;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; color: var(--texte); background: var(--creme); overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 5vw;
+      background: rgba(253,246,240,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rose-doux);
+    }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-style: italic; color: var(--rose-fonce); letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--texte); transition: color 0.3s; }
+    .nav-links a:hover { color: var(--rose-fonce); }
+    .nav-cta { background: var(--rose-fonce); color: white !important; padding: 0.55rem 1.5rem; border-radius: 50px; }
+
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 80px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(244,192,192,0.35) 0%, transparent 60%), radial-gradient(ellipse at 10% 80%, rgba(244,192,192,0.2) 0%, transparent 50%); pointer-events: none; }
+    .hero-text { display: flex; flex-direction: column; justify-content: center; padding: 6rem 4rem 4rem 8vw; }
+    .hero-badge { display: inline-block; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rose-fonce); border: 1px solid var(--rose-doux); padding: 0.4rem 1rem; border-radius: 50px; margin-bottom: 2rem; width: fit-content; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5vw, 5.5rem); font-weight: 300; line-height: 1.08; color: var(--texte); margin-bottom: 1.5rem; }
+    .hero-title em { font-style: italic; color: var(--rose-fonce); }
+    .hero-desc { font-size: 1rem; line-height: 1.8; color: var(--gris-doux); max-width: 420px; margin-bottom: 2.5rem; font-weight: 300; }
+    .hero-btns { display: flex; gap: 1rem; align-items: center; }
+    .btn-primary { background: var(--rose-fonce); color: white; text-decoration: none; padding: 1rem 2.5rem; border-radius: 50px; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; }
+    .btn-primary:hover { background: var(--texte); transform: translateY(-2px); }
+    .btn-ghost { color: var(--texte); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
+    .btn-ghost:hover { color: var(--rose-fonce); }
+    .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; padding: 4rem 3rem; }
+    .hero-mockup { width: 100%; max-width: 500px; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--rose-pale) 0%, var(--rose-doux) 100%); border-radius: 24px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 40px 80px rgba(196,96,106,0.15); animation: float 5s ease-in-out infinite; }
+    .hero-mockup::before { content: '🌸'; font-size: 8rem; opacity: 0.3; position: absolute; top: -1rem; right: -1rem; transform: rotate(15deg); }
+    .hero-mockup::after { content: '🌷'; font-size: 5rem; opacity: 0.2; position: absolute; bottom: 1rem; left: 1rem; transform: rotate(-10deg); }
+    .table-preview { text-align: center; z-index: 1; }
+    .table-preview .icon { font-size: 5rem; margin-bottom: 1rem; display: block; }
+    .table-preview p { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--rose-fonce); }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--rose-fonce); }
+    .stat { text-align: center; padding: 3rem 2rem; border-right: 1px solid rgba(255,255,255,0.15); }
+    .stat:last-child { border-right: none; }
+    .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: white; line-height: 1; margin-bottom: 0.5rem; }
+    .stat-label { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+
+    .section { padding: 6rem 8vw; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-eyebrow { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rose-fonce); margin-bottom: 1rem; display: block; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.2; }
+    .section-title em { font-style: italic; color: var(--rose-fonce); }
+
+    .grid-catalogue { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .card { background: white; border-radius: 20px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid var(--rose-pale); }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(196,96,106,0.12); }
+    .card-img { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; overflow: hidden; }
+    .card-img.rose { background: linear-gradient(135deg, #fce8e8, #f4c0c0); }
+    .card-img.creme { background: linear-gradient(135deg, #fdf6f0, #f0e0d0); }
+    .card-img.gold { background: linear-gradient(135deg, #fdf3e0, #e8d5a0); }
+    .card-tag { position: absolute; top: 1rem; right: 1rem; background: var(--rose-fonce); color: white; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 50px; }
+    .card-body { padding: 1.5rem; }
+    .card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.4rem; }
+    .card-desc { font-size: 0.85rem; color: var(--gris-doux); line-height: 1.6; margin-bottom: 1.2rem; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .card-price { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--rose-fonce); }
+    .card-price span { font-family: 'Jost', sans-serif; font-size: 0.75rem; color: var(--gris-doux); }
+    .card-btn { background: var(--rose-pale); color: var(--rose-fonce); border: none; padding: 0.6rem 1.2rem; border-radius: 50px; cursor: pointer; font-size: 0.8rem; font-family: 'Jost', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.3s, color 0.3s; }
+    .card-btn:hover { background: var(--rose-fonce); color: white; }
+
+    .formules { background: var(--rose-pale); padding: 6rem 8vw; }
+    .grid-formules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+    .formule { background: white; border-radius: 20px; padding: 2.5rem 2rem; text-align: center; border: 2px solid transparent; transition: border-color 0.3s, transform 0.3s; position: relative; }
+    .formule:hover { border-color: var(--rose-doux); transform: translateY(-5px); }
+    .formule.featured { border-color: var(--rose-fonce); background: var(--rose-fonce); color: white; }
+    .formule.featured .formule-price, .formule.featured .formule-name { color: white; }
+    .formule.featured .formule-list { color: rgba(255,255,255,0.85); }
+    .formule.featured .formule-btn { background: white; color: var(--rose-fonce); }
+    .formule-badge { position: absolute; top: -1rem; left: 50%; transform: translateX(-50%); background: var(--or); color: white; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 50px; }
+    .formule-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .formule-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--texte); }
+    .formule-price { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--rose-fonce); line-height: 1; margin: 1rem 0; }
+    .formule-price sup { font-size: 1.2rem; vertical-align: super; }
+    .formule-price small { font-size: 0.9rem; font-family: 'Jost', sans-serif; opacity: 0.7; }
+    .formule-list { list-style: none; color: var(--gris-doux); font-size: 0.9rem; line-height: 2.2; margin: 1.5rem 0; text-align: left; }
+    .formule-list li::before { content: '✓ '; color: var(--rose-fonce); font-weight: bold; }
+    .formule.featured .formule-list li::before { color: rgba(255,255,255,0.8); }
+    .formule-btn { background: var(--rose-fonce); color: white; border: none; padding: 0.9rem 2rem; border-radius: 50px; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; width: 100%; transition: opacity 0.3s; }
+    .formule-btn:hover { opacity: 0.85; }
+
+    .galerie { padding: 6rem 8vw; }
+    .galerie-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 250px 250px; gap: 1rem; margin-top: 3rem; }
+    .gal-item { border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 4rem; overflow: hidden; transition: transform 0.3s; }
+    .gal-item:hover { transform: scale(0.98); }
+    .gal-item:nth-child(1) { grid-row: 1 / 3; background: linear-gradient(145deg, #fce8e8, #e8919b); }
+    .gal-item:nth-child(2) { background: linear-gradient(145deg, #fdf6f0, #e8d0b8); }
+    .gal-item:nth-child(3) { background: linear-gradient(145deg, #fdf3e0, #e8c880); }
+    .gal-item:nth-child(4) { background: linear-gradient(145deg, #f0e8fc, #d0b8e8); }
+    .gal-item:nth-child(5) { background: linear-gradient(145deg, #e8f0fc, #b8cce8); }
+
+    .contact { background: var(--texte); padding: 6rem 8vw; position: relative; overflow: hidden; }
+    .contact::before { content: '💍'; position: absolute; font-size: 20rem; opacity: 0.04; right: -3rem; top: -3rem; }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .contact-text .section-eyebrow { color: var(--rose-doux); }
+    .contact-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); color: white; font-weight: 300; line-height: 1.3; margin-bottom: 1.5rem; }
+    .contact-title em { font-style: italic; color: var(--rose-doux); }
+    .contact-desc { color: rgba(255,255,255,0.6); line-height: 1.8; font-size: 0.95rem; }
+    .form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form input, .form textarea, .form select { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 1rem 1.2rem; color: white; font-family: 'Jost', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.3s; width: 100%; }
+    .form input::placeholder, .form textarea::placeholder { color: rgba(255,255,255,0.35); }
+    .form input:focus, .form textarea:focus, .form select:focus { border-color: var(--rose-doux); }
+    .form select option { background: var(--texte); }
+    .form textarea { min-height: 120px; resize: vertical; }
+    .form-submit { background: var(--rose-fonce); color: white; border: none; padding: 1.1rem; border-radius: 50px; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; transition: background 0.3s, transform 0.2s; }
+    .form-submit:hover { background: var(--rose-doux); transform: translateY(-2px); }
+
+    footer { background: var(--texte); border-top: 1px solid rgba(255,255,255,0.08); padding: 2rem 8vw; display: flex; justify-content: space-between; align-items: center; }
+    footer p { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-text > * { animation: fadeUp 0.8s ease both; }
+    .hero-text > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero-text > *:nth-child(2) { animation-delay: 0.25s; }
+    .hero-text > *:nth-child(3) { animation-delay: 0.4s; }
+    .hero-text > *:nth-child(4) { animation-delay: 0.55s; }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero-text { padding: 5rem 6vw 3rem; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+      .grid-formules { grid-template-columns: 1fr; }
+      .galerie-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gal-item:nth-child(1) { grid-row: auto; grid-column: 1 / 3; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Belle Fête</div>
+    <ul class="nav-links">
+      <li><a href="#catalogue">Catalogue</a></li>
+      <li><a href="#formules">Formules</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#contact" class="nav-cta">Demander un devis</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="hero-badge">✦ Location décoration mariage</span>
+      <h1 class="hero-title">Créez votre<br><em>jour parfait</em><br>sans effort</h1>
+      <p class="hero-desc">Chaises, nappes, housses, centres de table et accessoires — tout ce qu'il faut pour transformer votre salle en un lieu de rêve.</p>
+      <div class="hero-btns">
+        <a href="#catalogue" class="btn-primary">Voir le catalogue</a>
+        <a href="#contact" class="btn-ghost">Demander un devis →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-mockup">
+        <div class="table-preview">
+          <span class="icon">🌸</span>
+          <p>Votre table de rêve</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><div class="stat-number">350+</div><div class="stat-label">Mariages réalisés</div></div>
+    <div class="stat"><div class="stat-number">1200</div><div class="stat-label">Articles disponibles</div></div>
+    <div class="stat"><div class="stat-number">98%</div><div class="stat-label">Clients satisfaits</div></div>
+  </section>
+
+  <section class="section" id="catalogue">
+    <div class="section-header">
+      <span class="section-eyebrow">✦ Notre collection</span>
+      <h2 class="section-title">Des articles <em>élégants</em><br>pour chaque détail</h2>
+    </div>
+    <div class="grid-catalogue">
+      <div class="card"><div class="card-img rose">🪑<span class="card-tag">Bestseller</span></div><div class="card-body"><div class="card-name">Chaise Chiavari</div><p class="card-desc">Chaise dorée ou argentée avec coussin assorti. Disponible en blanc, or et champagne.</p><div class="card-footer"><div class="card-price">3,50 € <span>/ unité</span></div><button class="card-btn">Réserver</button></div></div></div>
+      <div class="card"><div class="card-img creme">🛋️</div><div class="card-body"><div class="card-name">Housse de chaise</div><p class="card-desc">Housses en tissu lycra ou coton. Coloris blanc, ivoire, rose poudré et doré.</p><div class="card-footer"><div class="card-price">1,50 € <span>/ unité</span></div><button class="card-btn">Réserver</button></div></div></div>
+      <div class="card"><div class="card-img rose">🌷</div><div class="card-body"><div class="card-name">Nappe de table</div><p class="card-desc">Nappes satin ou voile. Toutes dimensions. Coloris au choix selon votre thème.</p><div class="card-footer"><div class="card-price">8,00 € <span>/ table</span></div><button class="card-btn">Réserver</button></div></div></div>
+      <div class="card"><div class="card-img gold">🕯️</div><div class="card-body"><div class="card-name">Centre de table</div><p class="card-desc">Vases, bougeoirs, lanternes et compositions florales artificielles sur mesure.</p><div class="card-footer"><div class="card-price">25 € <span>/ centre</span></div><button class="card-btn">Réserver</button></div></div></div>
+      <div class="card"><div class="card-img creme">🎀</div><div class="card-body"><div class="card-name">Nœud décoratif</div><p class="card-desc">Nœuds organza, satin ou ruban pour chaises et décoration de salle. Grande variété.</p><div class="card-footer"><div class="card-price">0,80 € <span>/ unité</span></div><button class="card-btn">Réserver</button></div></div></div>
+      <div class="card"><div class="card-img rose">✨</div><div class="card-body"><div class="card-name">Set de table</div><p class="card-desc">Chemin de table, rond de serviette et marque-place coordonnés pour un ensemble parfait.</p><div class="card-footer"><div class="card-price">5,00 € <span>/ set</span></div><button class="card-btn">Réserver</button></div></div></div>
+    </div>
+  </section>
+
+  <section class="formules" id="formules">
+    <div class="section-header">
+      <span class="section-eyebrow">✦ Formules</span>
+      <h2 class="section-title">Des offres pensées<br><em>pour votre budget</em></h2>
+    </div>
+    <div class="grid-formules">
+      <div class="formule">
+        <div class="formule-icon">🌿</div>
+        <div class="formule-name">Essentiel</div>
+        <div class="formule-price"><sup>à partir de</sup> 200 €</div>
+        <ul class="formule-list"><li>50 chaises couvertes</li><li>10 nappes de table</li><li>Livraison incluse</li><li>Mise en place basique</li></ul>
+        <button class="formule-btn">Choisir cette formule</button>
+      </div>
+      <div class="formule featured">
+        <div class="formule-badge">⭐ Populaire</div>
+        <div class="formule-icon">🌸</div>
+        <div class="formule-name">Élégance</div>
+        <div class="formule-price"><sup>à partir de</sup> 450 €</div>
+        <ul class="formule-list"><li>100 chaises + housses</li><li>20 nappes satin</li><li>10 centres de table</li><li>Livraison & installation</li><li>Coordination le jour J</li></ul>
+        <button class="formule-btn">Choisir cette formule</button>
+      </div>
+      <div class="formule">
+        <div class="formule-icon">👑</div>
+        <div class="formule-name">Prestige</div>
+        <div class="formule-price"><sup>à partir de</sup> 900 €</div>
+        <ul class="formule-list"><li>200 chaises Chiavari dorées</li><li>Nappe + chemin sur mesure</li><li>Décoration complète de salle</li><li>Équipe dédiée toute la journée</li><li>Récupération en fin de soirée</li></ul>
+        <button class="formule-btn">Choisir cette formule</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="galerie" id="galerie">
+    <div class="section-header">
+      <span class="section-eyebrow">✦ Inspirations</span>
+      <h2 class="section-title">Ils nous ont fait<br><em>confiance</em></h2>
+    </div>
+    <div class="galerie-grid">
+      <div class="gal-item">🌹</div>
+      <div class="gal-item">🕊️</div>
+      <div class="gal-item">💐</div>
+      <div class="gal-item">🪻</div>
+      <div class="gal-item">🫧</div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-text">
+        <span class="section-eyebrow">✦ Parlons de votre mariage</span>
+        <h2 class="contact-title">Demandez votre<br><em>devis gratuit</em><br>en quelques secondes</h2>
+        <p class="contact-desc">Remplissez le formulaire et nous vous répondons sous 24h avec une proposition adaptée à votre date, votre lieu et votre nombre d'invités.</p>
+      </div>
+      <form class="form" onsubmit="return false;">
+        <div class="form-row">
+          <input type="text" placeholder="Votre prénom">
+          <input type="text" placeholder="Votre nom">
+        </div>
+        <input type="email" placeholder="Votre adresse email">
+        <input type="tel" placeholder="Votre téléphone">
+        <input type="date" style="color: rgba(255,255,255,0.5);">
+        <input type="number" placeholder="Nombre d'invités" min="1">
+        <select>
+          <option value="" disabled selected>Formule souhaitée</option>
+          <option>Essentiel</option>
+          <option>Élégance</option>
+          <option>Prestige</option>
+          <option>Sur devis personnalisé</option>
+        </select>
+        <textarea placeholder="Détails supplémentaires, lieu, couleurs souhaitées..."></textarea>
+        <button class="form-submit" type="submit">Envoyer ma demande ✦</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">Belle Fête</div>
+    <p>© 2025 Belle Fête — Location décoration mariage · Fait avec 🌸</p>
+    <p>contact@bellefete.fr · 06 XX XX XX XX</p>
+  </footer>
+
+</body>
+</html>
